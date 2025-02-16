@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeria de Imagens</title>
+    <style>
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #imagem-container {
+            margin: 20px;
+            text-align: center;
+        }
+        #imagem {
+            max-width: 100%;
+            height: auto;
+        }
+        #proxima-btn {
+            border-radius: 2em;
+            border-color: transparent;
+            background-color: cornflowerblue;
+            color: white;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        #proxima-btn:hover{
+            background-color: rgb(66, 109, 190);
+        }
+    </style>
+</head>
+<body>
+    <div id="imagem-container">
+        <img id="imagem" src="" alt="Imagem da Galeria">
+        <br>
+        <button id="proxima-btn">Próxima</button>
+    </div>
+
+    <script>
+        function loadNextImg() {
+            fetch('http://localhost:3000/imagens')
+                .then(response => response.json())//converte resposta em json
+                .then(data => {
+                    document.getElementById('imagem').src = data.url;
+                    console.log("imagem carregada");
+                })
+                .catch(error => console.error('Erro ao carregar a imagem:', error));
+        }
+        document.addEventListener('DOMContentLoaded', loadNextImg);
+        document.getElementById('proxima-btn').addEventListener('click', loadNextImg);
+    </script>
+</body>
+</html>
