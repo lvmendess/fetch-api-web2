@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            html, body{
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color: bisque;
+            }
+            .container{
+                display: flex;
+                flex-direction: row;
+                gap: 1.8vh;
+                align-items: center;
+            }
+            button{
+                height: 5em;
+                border-radius: 1em;
+                border: transparent;
+                color: white;
+                width: 5em;
+            }
+            #sim{
+                background-color: rgb(45, 148, 42);
+            }
+            #sim:hover{
+                background-color: rgb(86, 189, 82);
+            }
+            #nao{
+                background-color: rgb(202, 77, 45);
+            }
+            #nao:hover{
+                background-color: rgb(212, 106, 79);
+            }
+        </style>
+    </head>
+    <body>
+        <h2>Você está satisfeito com sua compra?</h2>
+        <div class="container">
+            <span id="contSim"></span>
+            <button id="sim">Sim</button>
+            <button id="nao">Não</button>
+            <span id="contNao"></span>
+        </div>
+
+        <script>
+            async function update(){
+                const response = await fetch('/contador');
+                const data = await response.json();
+                document.getElementById('contSim').textContent = data.sim;
+                document.getElementById('contNao').textContent = data.nao;
+            }
+
+            async function sendResponse(operacao) {
+            await fetch('/contador', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({operacao}),
+            });
+            update();
+        }
+
+        document.addEventListener('DOMContentLoaded', update);
+        document.getElementById('sim').addEventListener('click', () => sendResponse('sim'));
+        document.getElementById('nao').addEventListener('click', () => sendResponse('nao'));
+        </script>       
+    </body>
+
+</html>
